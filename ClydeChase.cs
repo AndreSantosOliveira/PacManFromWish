@@ -1,3 +1,16 @@
+/*
+  ______  _____           
+ |  ____||_   _|    /\    
+ | |__     | |     /  \   
+ |  __|    | |    / /\ \  
+ | |      _| |_  / ____ \ 
+ |_|     |_____|/_/    \_\    
+
+Trabalho realizado por:
+André Santos Oliveira  2021226714
+José António Rodrigues 2021235353
+*/
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

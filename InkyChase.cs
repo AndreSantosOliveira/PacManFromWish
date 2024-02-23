@@ -1,19 +1,34 @@
+/*
+  ______  _____           
+ |  ____||_   _|    /\    
+ | |__     | |     /  \   
+ |  __|    | |    / /\ \  
+ | |      _| |_  / ____ \ 
+ |_|     |_____|/_/    \_\    
+
+Trabalho realizado por:
+André Santos Oliveira  2021226714
+José António Rodrigues 2021235353
+*/
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class InkyChase : GhostChase
 {
-    protected override void OnTriggerEnter2D(Collider2D other){
+    protected override void OnTriggerEnter2D(Collider2D other)
+    {
         //Inky's chase behavior
         //We only have to select the next direction to move to
 
         //instantiating the intersection node object
-        Node node = other.GetComponent<Node>(); 
- 
+        Node node = other.GetComponent<Node>();
+
         //First check if this behaviour is enabled
         //and the ghost is not frightened
-        if (node != null && isChasing() && !isFrightened()){
+        if (node != null && isChasing() && !isFrightened())
+        {
             //Get the available directions in this intersection
             List<Vector2> dirs = getAvailableDirections(node);
             int count = dirs.Count;
@@ -25,7 +40,7 @@ public class InkyChase : GhostChase
             {
                 i = (i + 1) % count;
             }
-            setDirection(dirs[i]);        
+            setDirection(dirs[i]);
         }
     }
 }
