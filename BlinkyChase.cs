@@ -17,7 +17,7 @@ using System;
 using System.Linq;
 
 
-public class PinkyChase : GhostChase
+public class BlinkyChase : GhostChase
 {
 
     protected override void OnTriggerEnter2D(Collider2D other)
