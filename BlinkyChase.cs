@@ -43,7 +43,7 @@ public class BlinkyChase : GhostChase
             for (int i = 0; i < dirs.Count; ++i)
             {
                 Vector2 posicaoAvanco = new Vector2(currentPosition()[0], currentPosition()[1]) + dirs[i];
-                distancias.Add(dirs[i], distanciaManhattan(posicaoAvanco, getPacmanPosition()));
+                distancias.Add(dirs[i], distanciaManhattan(posicaoAvanco, new Vector2(getPacmanPosition()[0], getPacmanPosition()[1])));
             }
 
             //Sort dictionary from lesser to greater and extract 2 smallest distances
