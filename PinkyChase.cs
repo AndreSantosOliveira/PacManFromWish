@@ -9,15 +9,17 @@ public class PinkyChase : GhostChase
 {
     protected override void OnTriggerEnter2D(Collider2D other)
     {
-                Node node = other.GetComponent<Node>(); 
- 
-        if (node != null && isChasing() && !isFrightened()) {
+        Node node = other.GetComponent<Node>();
+
+        if (node != null && isChasing() && !isFrightened())
+        {
             Dictionary<Vector2, float> distancias = new();
 
             List<Vector2> dirs = getAvailableDirections(node);
 
-            for (int i = 0; i < dirs.Count; ++i) {
-                Vector2 posicaoAvanco = new Vector2(currentPosition()[0], currentPosition()[1]) + dirs[i] * 4; //pegar no vetor direção do pacman
+            for (int i = 0; i < dirs.Count; ++i)
+            {
+                Vector2 posicaoAvanco = new Vector2(currentPosition()[0], currentPosition()[1]) + dirs[i];
                 distancias.Add(dirs[i], distanciaManhattan(posicaoAvanco, getPacmanPosition()));
             }
 
@@ -27,14 +29,17 @@ public class PinkyChase : GhostChase
                     .Select(pair => pair.Key) //fazer lista das direções
                     .ToList(); //converter para lista
 
-            if (duasDirecoesMaisCurtasPacman[0] == -currentDirection()) {
+            if (duasDirecoesMaisCurtasPacman[0] == -currentDirection())
+            {
                 setDirection(duasDirecoesMaisCurtasPacman[1]);
-            } else {
-                setDirection(duasDirecoesMaisCurtasPacman[0]);  
+            }
+            else
+            {
+                setDirection(duasDirecoesMaisCurtasPacman[0]);
             }
         }
     }
 
-    float distanciaManhattan(Vector2 pointA, Vector2 pointB) { return Mathf.Abs(pointA.x - pointB.x) + Mathf.Abs(pointA.y - pointB.y);}
+    float distanciaManhattan(Vector2 pointA, Vector2 pointB) { return Mathf.Abs(pointA.x - pointB.x) + Mathf.Abs(pointA.y - pointB.y); }
 
 }
