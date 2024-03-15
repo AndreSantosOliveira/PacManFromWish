@@ -1,3 +1,16 @@
+/*
+    ______  _____           
+   |  ____||_   _|    /\    
+   | |__     | |     /  \   
+   |  __|    | |    / /\ \  
+   | |      _| |_  / ____ \ 
+   |_|     |_____|/_/    \_\    
+
+Trabalho realizado por:
+André Santos Oliveira  2021226714
+José António Rodrigues 2021235353
+Saulo José Mendes      2021235944
+*/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,72 +19,70 @@ using System.Linq;
 
 public class MadgeChase : GhostChase
 {
-
     public LifePellet LifePellet;
-    public SpriteRenderer spriteRenderer;
-    private bool inCage = true; // Flag to track if the ghost is in its initial caged state
-
     protected override void OnTriggerEnter2D(Collider2D other)
     {
-        // If life pellet hasn't been eaten yet
+
+        //If life pellet hasn't been eaten yet
         if (LifePellet.gameObject.activeSelf)
         {
-            // Madge's chase behavior
-            // We only have to select the next direction to move to
+            //Madge's chase behavior
+            //We only have to select the next direction to move to
 
-            // Instantiating the intersection node object
+            //instantiating the intersection node object
             Node node = other.GetComponent<Node>();
 
-            // First check if this behaviour is enabled and the ghost is not frightened
-            if (node != null && !isFrightened())
+
+            //First check if this behaviour is enabled
+            //and the ghost is not frightened
+            if (node != null && isChasing() && !isFrightened())
             {
-                // If ghost is in cage, move towards the life pellet
-                if (inCage)
+                //Directions and distances dictionary
+                Dictionary<Vector2, float> distancias = new();
+
+                //Get the available directions in this intersection
+                List<Vector2> dirs = getAvailableDirections(node);
+
+
+
+
+                //Add available directions and respective manhattan distances to dictionary
+                for (int i = 0; i < dirs.Count; ++i)
                 {
-                    // If ghost is in cage, move towards the life pellet
-                    Vector2 moveToCenter = (new Vector2(0.02f, -3.5f) - new Vector2(currentPosition()[0], currentPosition()[1]));
-                    setDirection(moveToCenter);
-                    inCage = false; // Update the flag to indicate that ghost has left its initial state
+                    Vector2 posicaoAvanco = new Vector2(currentPosition()[0], currentPosition()[1]) + dirs[i];
+                    float[] posicaoLifePellet = { 0.02f, -3.5f };
+                    distancias.Add(dirs[i], distanciaManhattan(posicaoAvanco, new Vector2(posicaoLifePellet[0], posicaoLifePellet[1])));
                 }
-                // If ghost is not in cage, find shortest path to the pellet
+
+                //Sort dictionary from lesser to greater and extract 2 smallest distances
+                var duasDirecoesMaisCurtasPacman = distancias
+                        .OrderBy(pair => pair.Value) //sort
+                        .Take(2) //take first two (smallest ones)
+                        .Select(pair => pair.Key) //make dir list
+                        .ToList(); //convert list
+
+                //Avoid going back the same direction it came from
+                if (duasDirecoesMaisCurtasPacman[0] == -currentDirection())
+                {
+                    //If the direction with the smallest manhattan value is equal to the opposite current 
+                    //direction of the ghost, choose the second smallest instead
+                    setDirection(duasDirecoesMaisCurtasPacman[1]);
+                }
+
                 else
                 {
-                    // Directions and distances dictionary
-                    Dictionary<Vector2, float> distances = new Dictionary<Vector2, float>();
-
-                    // Get the available directions in this intersection
-                    List<Vector2> dirs = getAvailableDirections(node);
-
-                    // Add available directions and respective manhattan distances to dictionary
-                    foreach (Vector2 dir in dirs)
-                    {
-                        Vector2 newPosition = new Vector2(currentPosition()[0], currentPosition()[1]) + dir;
-                        float distanceToPellet = Mathf.Abs(newPosition.x - 0.02f) + Mathf.Abs(newPosition.y + 3.5f);
-                        distances.Add(dir, distanceToPellet);
-                    }
-
-                    // Sort dictionary by distances
-                    var sortedDistances = distances.OrderBy(pair => pair.Value);
-
-                    // Avoid going back the same direction it came from
-                    if (sortedDistances.First().Key != -currentDirection())
-                    {
-                        // Set direction to the closest direction to the pellet
-                        setDirection(sortedDistances.First().Key);
-                    }
-                    // Choose the second closest direction if the first one is the opposite of the current direction
-                    else
-                        setDirection(sortedDistances.ElementAt(1).Key);
+                    setDirection(duasDirecoesMaisCurtasPacman[0]);
                 }
             }
         }
+
         else
         {
-            //Change color to red
-            spriteRenderer.color = new Color(1, 0, 0, 1);
-
-            // Pellet eaten, enable rage mode
+            //Pellet eaten, enable rage mode
             base.OnTriggerEnter2D(other);
         }
     }
+
+    float distanciaManhattan(Vector2 pointA, Vector2 pointB) { return Mathf.Abs(pointA.x - pointB.x) + Mathf.Abs(pointA.y - pointB.y); }
+
 }
