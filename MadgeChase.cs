@@ -13,9 +13,6 @@ public class MadgeChase : GhostChase
 
     protected override void OnTriggerEnter2D(Collider2D other)
     {
-        // Change back to original color 
-        //spriteRenderer.color = new Color(1, 0, 1, 1);
-
         // If life pellet hasn't been eaten yet
         if (LifePellet.gameObject.activeSelf)
         {
