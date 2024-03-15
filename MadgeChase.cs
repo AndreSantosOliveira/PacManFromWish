@@ -20,6 +20,7 @@ using System.Linq;
 public class MadgeChase : GhostChase
 {
     public LifePellet LifePellet;
+    public SpriteRenderer spriteRenderer;
     protected override void OnTriggerEnter2D(Collider2D other)
     {
 
@@ -78,6 +79,8 @@ public class MadgeChase : GhostChase
 
         else
         {
+            // Change color to red
+            spriteRenderer.color = new Color(1, 0, 0, 1);
             //Pellet eaten, enable rage mode
             base.OnTriggerEnter2D(other);
         }
