@@ -6,11 +6,16 @@ using System.Linq;
 
 public class MadgeChase : GhostChase
 {
+
     public LifePellet LifePellet;
+    public SpriteRenderer spriteRenderer;
     private bool inCage = true; // Flag to track if the ghost is in its initial caged state
 
     protected override void OnTriggerEnter2D(Collider2D other)
     {
+        // Change back to original color 
+        //spriteRenderer.color = new Color(1, 0, 1, 1);
+
         // If life pellet hasn't been eaten yet
         if (LifePellet.gameObject.activeSelf)
         {
@@ -66,7 +71,7 @@ public class MadgeChase : GhostChase
         else
         {
             //Change color to red
-            GetComponent<SpriteRenderer>().color = new Color(1, 0, 0, 1);
+            spriteRenderer.color = new Color(1, 0, 0, 1);
 
             // Pellet eaten, enable rage mode
             base.OnTriggerEnter2D(other);
