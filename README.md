@@ -1,1 +1,1 @@
-Sucesso de Pacman top
+A small PacMan based project to understand reactive agents in AI.
